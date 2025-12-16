@@ -1,20 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute"; // <--- Import this
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route
-          path="/dashboard"
+        
+        {/* Wrap Dashboard in ProtectedRoute */}
+        <Route 
+          path="/dashboard" 
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
-          }
+          } 
         />
       </Routes>
     </BrowserRouter>
