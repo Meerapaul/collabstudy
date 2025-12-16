@@ -1,22 +1,44 @@
+import { useState } from "react";
 import JoinRoom from "../components/JoinRoom";
-import CreateRoom from "../components/CreateRoom"; // <--- ADDED THIS
-import RoomList from "../components/RoomList";     // <--- ADDED THIS
+import CreateRoom from "../components/CreateRoom";
+import RoomList from "../components/RoomList";
+import TaskManager from "../components/TaskManager"; // Import the TaskManager
 
 function Dashboard() {
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      
-      {/* Grid layout to organize the components nicely */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <CreateRoom />
-          <JoinRoom />
-        </div>
-        <div>
-          <RoomList />
-        </div>
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        {selectedRoomId && (
+          <button 
+            onClick={() => setSelectedRoomId(null)}
+            className="text-sm text-blue-600 underline"
+          >
+            ← Back to Room List
+          </button>
+        )}
       </div>
+
+      {/* CONDITIONAL RENDERING */}
+      {selectedRoomId ? (
+        // IF ROOM SELECTED: Show Task Manager
+        <TaskManager roomId={selectedRoomId} />
+      ) : (
+        // IF NO ROOM SELECTED: Show Dashboard Widgets
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <CreateRoom />
+            <JoinRoom />
+          </div>
+          <div>
+            {/* Pass the function to set the selected room */}
+            <RoomList onSelectRoom={setSelectedRoomId} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
